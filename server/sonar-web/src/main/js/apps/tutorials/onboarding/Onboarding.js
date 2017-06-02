@@ -20,12 +20,14 @@
 // @flow
 import React from 'react';
 import TokenStep from './TokenStep';
+import OrganizationStep from './OrganizationStep';
 import { translate } from '../../../helpers/l10n';
 import handleRequiredAuthentication from '../../../app/utils/handleRequiredAuthentication';
 import './styles.css';
 
 type Props = {
-  currentUser: { isLoggedIn: boolean }
+  currentUser: { login: string, isLoggedIn: boolean },
+  organizationsEnabled: boolean
 };
 
 type State = {
@@ -34,7 +36,12 @@ type State = {
 
 export default class Onboarding extends React.PureComponent {
   props: Props;
-  state: State = { step: 'token' };
+  state: State;
+
+  constructor(props: Props) {
+    super(props);
+    this.state = { step: props.organizationsEnabled ? 'organization' : 'token' };
+  }
 
   componentDidMount() {
     if (!this.props.currentUser.isLoggedIn) {
@@ -46,11 +53,16 @@ export default class Onboarding extends React.PureComponent {
     this.setState({ step: '' });
   };
 
+  handleOrganizationDone = () => {
+    this.setState({ step: 'token' });
+  };
+
   render() {
     if (!this.props.currentUser.isLoggedIn) {
       return null;
     }
 
+    const { organizationsEnabled } = this.props;
     const { step } = this.state;
 
     return (
@@ -62,7 +74,19 @@ export default class Onboarding extends React.PureComponent {
           </div>
         </header>
 
-        <TokenStep onContinue={this.handleTokenDone} open={step === 'token'} />
+        {organizationsEnabled &&
+          <OrganizationStep
+            currentUser={this.props.currentUser}
+            onContinue={this.handleOrganizationDone}
+            open={step === 'organization'}
+            stepNumber={1}
+          />}
+
+        <TokenStep
+          onContinue={this.handleTokenDone}
+          open={step === 'token'}
+          stepNumber={organizationsEnabled ? 2 : 1}
+        />
       </div>
     );
   }

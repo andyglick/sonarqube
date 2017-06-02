@@ -20,10 +20,11 @@
 // @flow
 import { connect } from 'react-redux';
 import Onboarding from './Onboarding';
-import { getCurrentUser } from '../../../store/rootReducer';
+import { getCurrentUser, areThereCustomOrganizations } from '../../../store/rootReducer';
 
 const mapStateToProps = state => ({
-  currentUser: getCurrentUser(state)
+  currentUser: getCurrentUser(state),
+  organizationsEnabled: areThereCustomOrganizations(state)
 });
 
 export default connect(mapStateToProps)(Onboarding);
