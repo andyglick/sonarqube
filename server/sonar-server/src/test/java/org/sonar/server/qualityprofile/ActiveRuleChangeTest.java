@@ -38,7 +38,7 @@ public class ActiveRuleChangeTest {
     QProfileChangeDto result = underTest.toDto(MY_LOGIN);
 
     assertThat(result.getChangeType()).isEqualTo(ACTIVATED.name());
-    assertThat(result.getProfileKey()).isEqualTo("QP1");
+    assertThat(result.getRulesProfileUuid()).isEqualTo("QP1");
     assertThat(result.getLogin()).isEqualTo(MY_LOGIN);
   }
 }

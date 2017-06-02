@@ -260,7 +260,6 @@ public class PlatformLevel4 extends PlatformLevel {
 
       // quality profile
       BuiltInQProfileRepositoryImpl.class,
-      BuiltInQProfileInsertImpl.class,
       ActiveRuleIndexer.class,
       XMLProfileParser.class,
       XMLProfileSerializer.class,

@@ -28,9 +28,9 @@ import org.sonar.db.KeyLongValue;
 
 public interface QualityProfileMapper {
 
-  void insertOrgQProfile(@Param("dto") QProfileDto dto, @Param("now") long now);
+  void insertOrgQProfile(@Param("dto") OrgQProfileDto dto, @Param("now") long now);
 
-  void insertRulesProfile(@Param("dto") QProfileDto dto, @Param("now") Date now);
+  void insertRulesProfile(@Param("dto") RulesProfileDto dto, @Param("now") Date now);
 
   void updateRulesProfile(@Param("dto") QProfileDto dto, @Param("now") Date now);
 
@@ -39,6 +39,8 @@ public interface QualityProfileMapper {
   void deleteRulesProfilesByUuids(@Param("uuids") Collection<String> uuids);
 
   void deleteOrgQProfilesByUuids(@Param("uuids") Collection<String> uuids);
+
+  List<RulesProfileDto> selectBuiltInRulesProfiles();
 
   List<QProfileDto> selectAll(@Param("organizationUuid") String organizationUuid);
 

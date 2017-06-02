@@ -272,7 +272,7 @@ public class QualityProfileDaoTest {
   }
 
   @Test
-  public void get_default_profile() {
+  public void selectDefaultProfile() {
     List<QProfileDto> sharedData = createSharedData();
 
     QProfileDto java = underTest.selectDefaultProfile(dbSession, organization, "java");
@@ -284,7 +284,7 @@ public class QualityProfileDaoTest {
   }
 
   @Test
-  public void get_default_profiles() {
+  public void selectDefaultProfiles() {
     List<QProfileDto> sharedData = createSharedData();
 
     List<QProfileDto> java = underTest.selectDefaultProfiles(dbSession, organization, singletonList("java"));
@@ -325,7 +325,7 @@ public class QualityProfileDaoTest {
   }
 
   @Test
-  public void should_find_by_language() {
+  public void selectByLanguage() {
     QProfileDto profile = QualityProfileTesting.newQualityProfileDto()
       .setOrganizationUuid(organization.getUuid());
     underTest.insert(dbSession, profile);
@@ -339,6 +339,7 @@ public class QualityProfileDaoTest {
     assertThat(result.getKee()).isEqualTo(profile.getKee());
     assertThat(result.getLanguage()).isEqualTo(profile.getLanguage());
     assertThat(result.getOrganizationUuid()).isEqualTo(profile.getOrganizationUuid());
+    assertThat(result.getRulesProfileUuid()).isEqualTo(profile.getRulesProfileUuid());
   }
 
   @Test
@@ -532,7 +533,7 @@ public class QualityProfileDaoTest {
 
   @Test
   public void selectByKeys() {
-    dbTester.qualityProfiles().insert(newQualityProfileDto().setKey("qp-key-1"), newQualityProfileDto().setKee("qp-key-2"), newQualityProfileDto().setKee("qp-key-3"));
+    dbTester.qualityProfiles().insert(newQualityProfileDto().setKee("qp-key-1"), newQualityProfileDto().setKee("qp-key-2"), newQualityProfileDto().setKee("qp-key-3"));
 
     assertThat(underTest.selectOrFailByUuid(dbSession, "qp-key-1")).isNotNull();
     assertThat(underTest.selectByUuid(dbSession, "qp-key-1")).isNotNull();

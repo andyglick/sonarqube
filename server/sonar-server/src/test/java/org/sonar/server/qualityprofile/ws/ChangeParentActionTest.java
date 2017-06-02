@@ -102,7 +102,6 @@ public class ChangeParentActionTest {
     dbSession = dbTester.getSession();
     EsClient esClient = esTester.client();
     ruleIndex = new RuleIndex(esClient);
-    TestDefaultOrganizationProvider defaultOrganizationProvider = TestDefaultOrganizationProvider.from(dbTester);
     ruleIndexer = new RuleIndexer(
       esClient,
       dbClient);

@@ -127,7 +127,8 @@ public class QProfileFactory {
       db.qualityProfileDao().deleteProjectAssociationsByProfileUuids(dbSession, profileUuids);
       db.activeRuleDao().deleteParametersByProfileUuids(dbSession, profileUuids);
       db.activeRuleDao().deleteByProfileUuids(dbSession, profileUuids);
-      db.qProfileChangeDao().deleteByProfileKeys(dbSession, profileUuids);
+      // FIXME these are not uuids of rules_profiles
+      db.qProfileChangeDao().deleteByRulesProfileUuids(dbSession, profileUuids);
       db.defaultQProfileDao().deleteByQProfileUuids(dbSession, profileUuids);
       db.qualityProfileDao().deleteByUuids(dbSession, profileUuids);
       dbSession.commit();

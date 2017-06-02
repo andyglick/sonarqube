@@ -127,7 +127,7 @@ public class ActiveRuleDaoTest {
   }
 
   @Test
-  public void select_by_key() {
+  public void selectByKey() {
     ActiveRuleDto activeRule = createFor(profile1, rule1).setSeverity(BLOCKER);
     underTest.insert(dbSession, activeRule);
 
@@ -136,7 +136,7 @@ public class ActiveRuleDaoTest {
   }
 
   @Test
-  public void select_or_fail_by_key() {
+  public void selectOrFailByKey() {
     ActiveRuleDto activeRule = createFor(profile1, rule1).setSeverity(BLOCKER);
     underTest.insert(dbSession, activeRule);
 

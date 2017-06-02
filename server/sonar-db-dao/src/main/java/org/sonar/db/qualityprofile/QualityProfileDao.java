@@ -19,7 +19,6 @@
  */
 package org.sonar.db.qualityprofile;
 
-import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -37,6 +36,7 @@ import org.sonar.db.RowNotFoundException;
 import org.sonar.db.component.ComponentDto;
 import org.sonar.db.organization.OrganizationDto;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static org.sonar.db.DatabaseUtils.executeLargeInputs;
 import static org.sonar.db.DatabaseUtils.executeLargeUpdates;
 
@@ -69,6 +69,20 @@ public class QualityProfileDao implements Dao {
     return mapper(session).selectAll(organization.getUuid());
   }
 
+  public List<RulesProfileDto> selectBuiltInRulesProfiles(DbSession dbSession) {
+    return mapper(dbSession).selectBuiltInRulesProfiles();
+  }
+
+  public void insert(DbSession dbSession, RulesProfileDto dto) {
+    QualityProfileMapper mapper = mapper(dbSession);
+    mapper.insertRulesProfile(dto, new Date(system.now()));
+  }
+
+  public void insert(DbSession dbSession, OrgQProfileDto dto) {
+    QualityProfileMapper mapper = mapper(dbSession);
+    mapper.insertOrgQProfile(dto, system.now());
+  }
+
   public void insert(DbSession session, QProfileDto profile, QProfileDto... otherProfiles) {
     QualityProfileMapper mapper = mapper(session);
     doInsert(mapper, profile);
@@ -78,10 +92,12 @@ public class QualityProfileDao implements Dao {
   }
 
   private void doInsert(QualityProfileMapper mapper, QProfileDto profile) {
-    Preconditions.checkArgument(profile.getId() == null, "Quality profile is already persisted (got id %d)", profile.getId());
+    checkArgument(profile.getId() == null, "Quality profile is already persisted (got id %d)", profile.getId());
     long now = system.now();
-    mapper.insertRulesProfile(profile, new Date(now));
-    mapper.insertOrgQProfile(profile, now);
+    RulesProfileDto rulesProfile = RulesProfileDto.from(profile);
+    mapper.insertRulesProfile(rulesProfile, new Date(now));
+    mapper.insertOrgQProfile(OrgQProfileDto.from(profile), now);
+    profile.setId(rulesProfile.getId());
   }
 
   public void update(DbSession session, QProfileDto profile, QProfileDto... otherProfiles) {

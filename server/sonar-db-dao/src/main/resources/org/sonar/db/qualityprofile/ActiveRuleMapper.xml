@@ -51,14 +51,14 @@
   </update>
 
   <select id="selectByKey" parameterType="map" resultType="ActiveRule">
-    SELECT
+    select
     <include refid="activeRuleKeyColumns"/>
-    FROM active_rules a
+    from active_rules a
     <include refid="activeRuleKeyJoin"/>
-    WHERE
+    where
     oqp.uuid = #{profileUuid, jdbcType=VARCHAR}
-    AND r.plugin_rule_key = #{rule, jdbcType=VARCHAR}
-    AND r.plugin_name = #{repository, jdbcType=VARCHAR}
+    and r.plugin_rule_key = #{rule, jdbcType=VARCHAR}
+    and r.plugin_name = #{repository, jdbcType=VARCHAR}
   </select>
 
   <select id="selectByKeys" parameterType="map" resultType="ActiveRule">
