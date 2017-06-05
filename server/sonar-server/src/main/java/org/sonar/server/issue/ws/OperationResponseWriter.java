@@ -37,15 +37,6 @@ public class OperationResponseWriter {
     this.format = format;
   }
 
-  public void write(String issueKey, Request request, Response response) {
-    SearchResponseLoader.Collector collector = new SearchResponseLoader.Collector(ALL_ADDITIONAL_FIELDS, singleton(issueKey));
-    SearchResponseData data = loader.load(collector, null);
-
-    Issues.Operation responseBody = format.formatOperation(data);
-
-    WsUtils.writeProtobuf(responseBody, request, response);
-  }
-
   public void write(String issueKey, SearchResponseData preloadedResponseData, Request request, Response response) {
     SearchResponseLoader.Collector collector = new SearchResponseLoader.Collector(ALL_ADDITIONAL_FIELDS, singleton(issueKey));
     SearchResponseData data = loader.load(preloadedResponseData, collector, null);
