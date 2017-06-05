@@ -210,10 +210,14 @@ public class QualityProfileDao implements Dao {
     });
   }
 
-  public void deleteByUuids(DbSession dbSession, Collection<String> profileUuids) {
+  public void deleteOrgQProfilesByUuids(DbSession dbSession, Collection<String> profileUuids) {
     QualityProfileMapper mapper = mapper(dbSession);
     DatabaseUtils.executeLargeUpdates(profileUuids, mapper::deleteOrgQProfilesByUuids);
-    DatabaseUtils.executeLargeUpdates(profileUuids, mapper::deleteRulesProfilesByUuids);
+  }
+
+  public void deleteRulesProfilesByUuids(DbSession dbSession, Collection<String> rulesProfileUuids) {
+    QualityProfileMapper mapper = mapper(dbSession);
+    DatabaseUtils.executeLargeUpdates(rulesProfileUuids, mapper::deleteRulesProfilesByUuids);
   }
 
   private static String sqlQueryString(@Nullable String query) {

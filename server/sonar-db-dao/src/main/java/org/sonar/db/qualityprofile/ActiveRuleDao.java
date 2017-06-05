@@ -102,14 +102,14 @@ public class ActiveRuleDao implements Dao {
     }
   }
 
-  public void deleteByProfileUuids(DbSession dbSession, Collection<String> profileUuids) {
+  public void deleteByRuleProfileUuids(DbSession dbSession, Collection<String> rulesProfileUuids) {
     ActiveRuleMapper mapper = mapper(dbSession);
-    DatabaseUtils.executeLargeUpdates(profileUuids, mapper::deleteByProfileUuids);
+    DatabaseUtils.executeLargeUpdates(rulesProfileUuids, mapper::deleteByRuleProfileUuids);
   }
 
-  public void deleteParametersByProfileUuids(DbSession dbSession, Collection<String> profileUuids) {
+  public void deleteParametersByRuleProfileUuids(DbSession dbSession, Collection<String> rulesProfileUuids) {
     ActiveRuleMapper mapper = mapper(dbSession);
-    DatabaseUtils.executeLargeUpdates(profileUuids, mapper::deleteParametersByProfileUuids);
+    DatabaseUtils.executeLargeUpdates(rulesProfileUuids, mapper::deleteParametersByRuleProfileUuids);
   }
 
   /**

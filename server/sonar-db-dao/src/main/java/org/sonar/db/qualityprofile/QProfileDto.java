@@ -153,4 +153,19 @@ public class QProfileDto {
     this.isBuiltIn = b;
     return this;
   }
+
+  public static QProfileDto from(OrgQProfileDto org, RulesProfileDto rules) {
+    return new QProfileDto()
+      .setIsBuiltIn(rules.isBuiltIn())
+      .setKee(org.getUuid())
+      .setParentKee(org.getParentUuid())
+      .setOrganizationUuid(org.getOrganizationUuid())
+      .setId(rules.getId())
+      .setRulesProfileUuid(rules.getKee())
+      .setLanguage(rules.getLanguage())
+      .setName(rules.getName())
+      .setRulesUpdatedAt(rules.getRulesUpdatedAt())
+      .setLastUsed(rules.getLastUsed())
+      .setUserUpdatedAt(rules.getUserUpdatedAt());
+  }
 }

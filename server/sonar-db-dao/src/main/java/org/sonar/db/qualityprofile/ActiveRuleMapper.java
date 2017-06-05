@@ -34,7 +34,7 @@ public interface ActiveRuleMapper {
 
   void delete(int activeRuleId);
 
-  void deleteByProfileUuids(@Param("profileUuids") Collection<String> profileUuids);
+  void deleteByRuleProfileUuids(@Param("rulesProfileUuids") Collection<String> rulesProfileUuids);
 
   ActiveRuleDto selectByKey(@Param("profileUuid") String profileUuid, @Param("repository") String repository, @Param("rule") String rule);
 
@@ -54,7 +54,7 @@ public interface ActiveRuleMapper {
 
   void deleteParameters(int activeRuleId);
 
-  void deleteParametersByProfileUuids(@Param("profileUuids") Collection<String> profileUuids);
+  void deleteParametersByRuleProfileUuids(@Param("rulesProfileUuids") Collection<String> rulesProfileUuids);
 
   void deleteParameter(int activeRuleParamId);
 

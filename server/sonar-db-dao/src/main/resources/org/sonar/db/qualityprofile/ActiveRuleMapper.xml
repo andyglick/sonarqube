@@ -39,16 +39,16 @@
     DELETE FROM active_rules WHERE id=#{id, jdbcType=BIGINT}
   </delete>
 
-  <update id="deleteByProfileUuids" parameterType="String">
+  <delete id="deleteByRuleProfileUuids" parameterType="String">
     delete from active_rules
     where exists (
       select 1
-      from org_qprofiles oqp
-      inner join rules_profiles rp on rp.kee = oqp.rules_profile_uuid
-      where rp.id = profile_id and oqp.uuid in
-        <foreach collection="profileUuids" open="(" close=")" item="profileUuid" separator=",">#{profileUuid, jdbcType=VARCHAR}</foreach>
+      from rules_profiles rp
+      where rp.id = profile_id
+      and rp.kee in
+        <foreach collection="rulesProfileUuids" open="(" close=")" item="rulesProfileUuid" separator=",">#{rulesProfileUuid, jdbcType=VARCHAR}</foreach>
       )
-  </update>
+  </delete>
 
   <select id="selectByKey" parameterType="map" resultType="ActiveRule">
     select
@@ -149,16 +149,15 @@
     DELETE FROM active_rule_parameters WHERE active_rule_id=#{id, jdbcType=BIGINT}
   </delete>
 
-  <delete id="deleteParametersByProfileUuids" parameterType="String">
+  <delete id="deleteParametersByRuleProfileUuids" parameterType="String">
     delete from active_rule_parameters
     where exists (
       select 1 from active_rules ar
       inner join rules_profiles rp on rp.id = ar.profile_id
-      inner join org_qprofiles oqp on oqp.rules_profile_uuid = rp.kee
       where ar.id = active_rule_id
-      and oqp.uuid in
-        <foreach collection="profileUuids" open="(" close=")" item="profileUuid" separator=",">
-        #{profileUuid, jdbcType=VARCHAR}
+      and rp.kee in
+        <foreach collection="rulesProfileUuids" open="(" close=")" item="rulesProfileUuid" separator=",">
+        #{rulesProfileUuid, jdbcType=VARCHAR}
         </foreach>
     )
   </delete>

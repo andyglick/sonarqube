@@ -22,7 +22,6 @@ package org.sonar.db.qualityprofile;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -118,12 +117,6 @@ public class ActiveRuleDaoTest {
     dbClient.ruleDao().insertRuleParam(dbSession, rule2, rule2Param1);
 
     dbSession.commit();
-  }
-
-  @After
-  public void tearDown() {
-    // minor optimization, no need to commit pending operations
-    dbSession.rollback();
   }
 
   @Test
@@ -315,22 +308,22 @@ public class ActiveRuleDaoTest {
   }
 
   @Test
-  public void deleteByKeys_deletes_rows_from_table() {
+  public void deleteByRuleProfileUuids_deletes_rows_from_table() {
     underTest.insert(dbSession, newRow(profile1, rule1));
     underTest.insert(dbSession, newRow(profile1, rule2));
     underTest.insert(dbSession, newRow(profile2, rule1));
 
-    underTest.deleteByProfileUuids(dbSession, asList(profile1.getKee()));
+    underTest.deleteByRuleProfileUuids(dbSession, asList(profile1.getRulesProfileUuid()));
 
     assertThat(dbTester.countRowsOfTable(dbSession, "active_rules")).isEqualTo(1);
     assertThat(underTest.selectByKey(dbSession, ActiveRuleKey.of(profile2.getKee(), rule1.getKey()))).isPresent();
   }
 
   @Test
-  public void deleteByKeys_does_not_fail_when_profile_with_specified_key_does_not_exist() {
+  public void deleteByRuleProfileUuids_does_not_fail_when_rules_profile_with_specified_key_does_not_exist() {
     underTest.insert(dbSession, newRow(profile1, rule1));
 
-    underTest.deleteByProfileUuids(dbSession, asList("does_not_exist"));
+    underTest.deleteByRuleProfileUuids(dbSession, asList("does_not_exist"));
 
     assertThat(dbTester.countRowsOfTable(dbSession, "active_rules")).isEqualTo(1);
   }
@@ -477,7 +470,7 @@ public class ActiveRuleDaoTest {
   }
 
   @Test
-  public void deleteParametersByProfileKeys_deletes_rows_by_profile_keys() {
+  public void deleteParametersByRuleProfileUuids_deletes_rows_by_rule_profile_uuids() {
     ActiveRuleDto activeRuleInProfile1 = newRow(profile1, rule1);
     underTest.insert(dbSession, activeRuleInProfile1);
     ActiveRuleParamDto param1 = ActiveRuleParamDto.createFor(rule1Param1).setValue("foo");
@@ -487,7 +480,7 @@ public class ActiveRuleDaoTest {
     ActiveRuleParamDto param2 = ActiveRuleParamDto.createFor(rule1Param1).setValue("bar");
     underTest.insertParam(dbSession, activeRuleInProfile2, param2);
 
-    underTest.deleteParametersByProfileUuids(dbSession, asList(profile1.getKee(), "does_not_exist"));
+    underTest.deleteParametersByRuleProfileUuids(dbSession, asList(profile1.getRulesProfileUuid(), "does_not_exist"));
 
     List<ActiveRuleParamDto> params = underTest.selectAllParams(dbSession);
     assertThat(params).hasSize(1);
@@ -495,13 +488,13 @@ public class ActiveRuleDaoTest {
   }
 
   @Test
-  public void deleteParametersByProfileKeys_does_nothing_if_keys_are_empty() {
+  public void deleteParametersByRuleProfileUuids_does_nothing_if_keys_are_empty() {
     ActiveRuleDto activeRuleInProfile1 = newRow(profile1, rule1);
     underTest.insert(dbSession, activeRuleInProfile1);
     ActiveRuleParamDto param1 = ActiveRuleParamDto.createFor(rule1Param1).setValue("foo");
     underTest.insertParam(dbSession, activeRuleInProfile1, param1);
 
-    underTest.deleteParametersByProfileUuids(dbSession, emptyList());
+    underTest.deleteParametersByRuleProfileUuids(dbSession, emptyList());
 
     List<ActiveRuleParamDto> params = underTest.selectAllParams(dbSession);
     assertThat(params).hasSize(1);
