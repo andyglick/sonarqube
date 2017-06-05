@@ -309,7 +309,7 @@ public class SearchAction implements IssuesWsAction {
 
     // execute request
     SearchResult<IssueDoc> result = issueIndex.search(query, options);
-    List<String> issueKeys = result.getDocs().stream().map(IssueDoc::key).collect(MoreCollectors.toList(result.getDocs().size()));
+    Set<String> issueKeys = result.getDocs().stream().map(IssueDoc::key).collect(MoreCollectors.toSet(result.getDocs().size()));
 
     // load the additional information to be returned in response
     SearchResponseLoader.Collector collector = new SearchResponseLoader.Collector(additionalFields, issueKeys);
