@@ -56,4 +56,14 @@ describe('#sortProfiles', () => {
     const profile3 = createProfile('profile3', 'profile1');
     checkOrder(sortProfiles([profile3, profile2, profile1]), ['profile1', 'profile3', 'profile2']);
   });
+
+  it('sorts partial set of inherited profiles', () => {
+    const foo = createProfile('foo', 'bar');
+    checkOrder(sortProfiles([foo]), ['foo']);
+
+    const profile1 = createProfile('profile1', 'x');
+    const profile2 = createProfile('profile2');
+    const profile3 = createProfile('profile3', 'profile2');
+    checkOrder(sortProfiles([profile1, profile2, profile3]), ['profile1', 'profile2', 'profile3']);
+  });
 });

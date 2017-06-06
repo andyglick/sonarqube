@@ -42,7 +42,11 @@ export function sortProfiles(profiles: Array<Profile>) {
     children.forEach(child => putProfile(child, depth + 1));
   }
 
-  putProfile();
+  sorted
+    .filter(
+      profile => profile.parentKey == null || sorted.find(p => p.key === profile.parentKey) == null
+    )
+    .forEach(profile => putProfile(profile));
 
   return result;
 }
@@ -67,7 +71,7 @@ export function isStagnant(profile: Profile) {
 }
 
 export const getProfilesPath = (organization: ?string) =>
-  (organization ? `/organizations/${organization}/quality_profiles` : '/profiles');
+  organization ? `/organizations/${organization}/quality_profiles` : '/profiles';
 
 export const getProfilesForLanguagePath = (language: string, organization: ?string) => ({
   pathname: getProfilesPath(organization),
