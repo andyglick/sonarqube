@@ -11,6 +11,7 @@ exports[`creates new organization 1`] = `
     <input
       autoFocus={true}
       className="input-super-large spacer-right text-middle"
+      maxLength={32}
       minLength={2}
       onChange={[Function]}
       placeholder="onboarding.organization.placeholder"
@@ -20,7 +21,7 @@ exports[`creates new organization 1`] = `
     />
     <button
       className="text-middle"
-      disabled={false}
+      disabled={true}
     >
       create
     </button>
@@ -44,6 +45,7 @@ exports[`creates new organization 2`] = `
     <input
       autoFocus={true}
       className="input-super-large spacer-right text-middle"
+      maxLength={32}
       minLength={2}
       onChange={[Function]}
       placeholder="onboarding.organization.placeholder"
@@ -142,6 +144,7 @@ exports[`deletes organization 3`] = `
     <input
       autoFocus={true}
       className="input-super-large spacer-right text-middle"
+      maxLength={32}
       minLength={2}
       onChange={[Function]}
       placeholder="onboarding.organization.placeholder"
@@ -151,7 +154,7 @@ exports[`deletes organization 3`] = `
     />
     <button
       className="text-middle"
-      disabled={false}
+      disabled={true}
     >
       create
     </button>
