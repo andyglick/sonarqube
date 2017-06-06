@@ -331,7 +331,7 @@ public class UserDbTester {
   }
 
   public void setShowOnboardingTutorial(UserDto user, boolean showOnboardingTutorial) {
-    db.getDbClient().userDao().setShowOnboarding(db.getSession(), user, showOnboardingTutorial);
+    db.getDbClient().userDao().updateOnboaded(db.getSession(), user, showOnboardingTutorial);
     db.commit();
   }
 }

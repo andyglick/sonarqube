@@ -20,28 +20,24 @@
 package org.sonar.server.platform.db.migration.version.v65;
 
 import java.sql.SQLException;
-import org.assertj.core.api.Assertions;
+import java.sql.Types;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.sonar.db.CoreDbTester;
 
-public class SetUsersShowOnboardingToFalseTest {
-
+public class AddUsersOnboardedTest {
   @Rule
-  public CoreDbTester db = CoreDbTester.createForSchema(SetUsersShowOnboardingToFalseTest.class, "users_with_showOnboarding_column.sql");
+  public CoreDbTester db = CoreDbTester.createForSchema(AddUsersOnboardedTest.class, "users_without_onboarded_column.sql");
+  @Rule
+  public ExpectedException expectedException = ExpectedException.none();
 
-  public SetUsersShowOnboardingToFalse underTest = new SetUsersShowOnboardingToFalse(db.database());
+  private AddUsersOnboarded underTest = new AddUsersOnboarded(db.database());
 
   @Test
-  public void should_set_field() throws SQLException {
-    db.executeInsert("USERS",
-      "SHOW_ONBOARDING", true,
-      "IS_ROOT", true);
-
-    Assertions.assertThat(db.selectFirst("SELECT SHOW_ONBOARDING FROM USERS")).containsValue(true);
-
+  public void execute_adds_nullable_boolean_column_private_to_table_PROJECTS() throws SQLException {
     underTest.execute();
 
-    Assertions.assertThat(db.selectFirst("SELECT SHOW_ONBOARDING FROM USERS")).containsValue(false);
+    db.assertColumnDefinition("users", "onboarded", Types.BOOLEAN, null, true);
   }
 }

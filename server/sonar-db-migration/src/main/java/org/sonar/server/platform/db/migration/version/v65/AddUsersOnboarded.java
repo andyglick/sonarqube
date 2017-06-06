@@ -26,8 +26,8 @@ import org.sonar.server.platform.db.migration.step.DdlChange;
 
 import static org.sonar.server.platform.db.migration.def.BooleanColumnDef.newBooleanColumnDefBuilder;
 
-public class AddUsersShowOnboarding extends DdlChange {
-  public AddUsersShowOnboarding(Database db) {
+public class AddUsersOnboarded extends DdlChange {
+  public AddUsersOnboarded(Database db) {
     super(db);
   }
 
@@ -35,7 +35,7 @@ public class AddUsersShowOnboarding extends DdlChange {
   public void execute(Context context) throws SQLException {
     context.execute(new AddColumnsBuilder(getDialect(), "users")
       .addColumn(newBooleanColumnDefBuilder()
-        .setColumnName("show_onboarding")
+        .setColumnName("onboarded")
         .setIsNullable(true)
         .build())
       .build());

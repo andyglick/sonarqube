@@ -20,19 +20,28 @@
 package org.sonar.server.platform.db.migration.version.v65;
 
 import java.sql.SQLException;
-import org.sonar.db.Database;
-import org.sonar.server.platform.db.migration.step.DataChange;
+import org.assertj.core.api.Assertions;
+import org.junit.Rule;
+import org.junit.Test;
+import org.sonar.db.CoreDbTester;
 
-public class SetUsersShowOnboardingToFalse extends DataChange {
-  public SetUsersShowOnboardingToFalse(Database db) {
-    super(db);
-  }
+public class SetUsersOnboardedToTrueTest {
 
-  @Override
-  public void execute(Context context) throws SQLException {
-    context.prepareUpsert("update users set show_onboarding=?")
-      .setBoolean(1, false)
-      .execute()
-      .commit();
+  @Rule
+  public CoreDbTester db = CoreDbTester.createForSchema(SetUsersOnboardedToTrueTest.class, "users_with_onboarded_column.sql");
+
+  public SetUsersOnboardedToTrue underTest = new SetUsersOnboardedToTrue(db.database());
+
+  @Test
+  public void should_set_field() throws SQLException {
+    db.executeInsert("USERS",
+      "SHOW_ONBOARDING", true,
+      "IS_ROOT", true);
+
+    Assertions.assertThat(db.selectFirst("SELECT SHOW_ONBOARDING FROM USERS")).containsValue(true);
+
+    underTest.execute();
+
+    Assertions.assertThat(db.selectFirst("SELECT SHOW_ONBOARDING FROM USERS")).containsValue(false);
   }
 }

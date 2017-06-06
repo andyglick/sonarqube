@@ -260,7 +260,7 @@ public class UserUpdaterTest {
       .setName("User")
       .build());
 
-    assertThat(db.getDbClient().userDao().getShowOnboarding(db.getSession(), user)).isTrue();
+    assertThat(db.getDbClient().userDao().selectOnboarded(db.getSession(), user)).isTrue();
   }
 
   @Test
@@ -274,7 +274,7 @@ public class UserUpdaterTest {
       .setName("User")
       .build());
 
-    assertThat(db.getDbClient().userDao().getShowOnboarding(db.getSession(), user)).isFalse();
+    assertThat(db.getDbClient().userDao().selectOnboarded(db.getSession(), user)).isFalse();
   }
 
   @Test
