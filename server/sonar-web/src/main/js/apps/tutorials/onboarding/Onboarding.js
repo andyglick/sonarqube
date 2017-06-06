@@ -27,7 +27,8 @@ import './styles.css';
 
 type Props = {
   currentUser: { login: string, isLoggedIn: boolean },
-  organizationsEnabled: boolean
+  organizationsEnabled: boolean,
+  sonarCloud: boolean
 };
 
 type State = {
@@ -62,13 +63,15 @@ export default class Onboarding extends React.PureComponent {
       return null;
     }
 
-    const { organizationsEnabled } = this.props;
+    const { organizationsEnabled, sonarCloud } = this.props;
     const { step } = this.state;
 
     return (
       <div className="page page-limited">
         <header className="page-header">
-          <h1 className="page-title">{translate('onboarding.header')}</h1>
+          <h1 className="page-title">
+            {translate(sonarCloud ? 'onboarding.header.sonarcloud' : 'onboarding.header')}
+          </h1>
           <div className="page-description">
             {translate('onboarding.header.description')}
           </div>
